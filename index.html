@@ -2,278 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ShuttleStorm Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    :root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --panel-2: #1f2937;
-      --line: #334155;
-      --text: #e5e7eb;
-      --muted: #94a3b8;
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --chip: #0b1220;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
-      color: var(--text);
-    }
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    .hero {
-      display: grid;
-      gap: 12px;
-      padding: 18px;
-      border: 1px solid rgba(148,163,184,.18);
-      background: rgba(15,23,42,.85);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(2,6,23,.35);
-    }
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-    h1, h2, h3, h4, p { margin: 0; }
-    .muted { color: var(--muted); }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .chip {
-      background: rgba(15,23,42,.8);
-      border: 1px solid rgba(148,163,184,.18);
-      color: var(--text);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-    }
-    .grid {
-      margin-top: 16px;
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-    }
-    .panel {
-      background: rgba(17,24,39,.9);
-      border: 1px solid rgba(148,163,184,.16);
-      border-radius: 18px;
-      padding: 16px;
-    }
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-    .tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    button, select, input, textarea {
-      font: inherit;
-    }
-    .tab, .btn {
-      border: 1px solid rgba(148,163,184,.18);
-      background: #0b1220;
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-    }
-    .tab.active, .btn.primary {
-      background: linear-gradient(90deg, rgba(34,197,94,.18), rgba(56,189,248,.18));
-      border-color: rgba(56,189,248,.35);
-    }
-    .btn.warning { background: rgba(245,158,11,.14); border-color: rgba(245,158,11,.35); }
-    .btn.danger { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.28); }
-    .btn.small { padding: 8px 10px; border-radius: 10px; font-size: 13px; }
-    .btn:disabled { opacity: .55; cursor: not-allowed; }
-    .card-list {
-      display: grid;
-      gap: 10px;
-    }
-    .match-card {
-      background: rgba(15,23,42,.75);
-      border: 1px solid rgba(148,163,184,.12);
-      border-radius: 16px;
-      padding: 14px;
-      display: grid;
-      gap: 10px;
-    }
-    .match-meta {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .teams-row {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 8px;
-    }
-    .team-box {
-      background: rgba(31,41,55,.72);
-      border: 1px solid rgba(148,163,184,.12);
-      border-radius: 14px;
-      padding: 12px;
-    }
-    .team-box strong { display: block; font-size: 15px; }
-    .score-big { font-size: 28px; font-weight: 800; text-align: center; }
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,.18);
-      background: rgba(15,23,42,.9);
-      width: fit-content;
-    }
-    .status.completed { color: #86efac; border-color: rgba(34,197,94,.35); }
-    .status.upcoming { color: #bae6fd; border-color: rgba(56,189,248,.3); }
-    .status.live { color: #fde68a; border-color: rgba(245,158,11,.32); }
-    .badge {
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: rgba(15,23,42,.95);
-      border: 1px solid rgba(148,163,184,.18);
-      font-size: 12px;
-      color: var(--muted);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 14px;
-    }
-    th, td {
-      text-align: left;
-      padding: 11px 10px;
-      border-bottom: 1px solid rgba(148,163,184,.12);
-      font-size: 14px;
-    }
-    th {
-      color: #cbd5e1;
-      background: rgba(15,23,42,.75);
-      position: sticky;
-      top: 0;
-    }
-    tr:last-child td { border-bottom: none; }
-    .right { text-align: right; }
-    .pill {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 5px 8px;
-      background: rgba(34,197,94,.12);
-      color: #bbf7d0;
-      font-size: 12px;
-    }
-    .form-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .form-grid .full { grid-column: 1 / -1; }
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-    .field label {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .field input, .field textarea, .field select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,.16);
-      background: rgba(15,23,42,.92);
-      color: var(--text);
-    }
-    .set-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(2,6,23,.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 30;
-    }
-    .modal-backdrop.open { display: flex; }
-    .modal {
-      width: min(860px, 100%);
-      max-height: 92vh;
-      overflow: auto;
-      background: #0f172a;
-      border: 1px solid rgba(148,163,184,.18);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 25px 60px rgba(2,6,23,.5);
-    }
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-    }
-    .kpi {
-      background: rgba(15,23,42,.75);
-      border: 1px solid rgba(148,163,184,.12);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .kpi .value {
-      font-size: 24px;
-      font-weight: 800;
-      margin-top: 6px;
-    }
-    .footer-note {
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .hidden { display: none !important; }
-    @media (max-width: 980px) {
-      .grid, .two-col { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 680px) {
-      .kpi-grid, .form-grid, .set-grid { grid-template-columns: 1fr; }
-      .teams-row { grid-template-columns: 1fr; }
-      .score-big { font-size: 22px; }
-      th, td { font-size: 13px; padding: 10px 8px; }
-      .container { padding: 12px; }
-    }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -315,6 +47,7 @@
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
             <button class="btn small" id="toggleAdminBtn">Admin Mode</button>
+            <button class="btn small" id="setupSupabaseBtn">Setup Live Sync</button>
             <button class="btn small" id="exportBtn">Export JSON</button>
             <label class="btn small" for="importInput">Import JSON</label>
             <input id="importInput" type="file" accept="application/json" class="hidden" />
@@ -325,7 +58,7 @@
       </div>
 
       <div style="display:grid; gap:16px;">
-        <div class="panel">
+        <div class="panel panel-compact">
           <div class="panel-header">
             <div>
               <h2>Standings</h2>
@@ -334,6 +67,38 @@
           </div>
           <div class="tabs" id="standingTabs"></div>
           <div id="standingsWrap"></div>
+        </div>
+
+        <div class="panel panel-compact">
+          <div class="panel-header">
+            <div>
+              <h2>Team Participation</h2>
+              <p class="muted">Track how many matches each player has played</p>
+            </div>
+          </div>
+          <div class="tabs" id="participationTabs"></div>
+          <div id="participationWrap"></div>
+          <div class="footer-note">Teams with non-participating players will have 2 pts deducted per player at the end of league stage.</div>
+        </div>
+
+        <div class="panel panel-compact">
+          <div class="panel-header">
+            <div>
+              <h2>Leading Scorer: Men</h2>
+              <p class="muted">Singles wins = 2 pts, Doubles wins = 1 pt</p>
+            </div>
+          </div>
+          <div id="playerStatsMenWrap"></div>
+        </div>
+
+        <div class="panel panel-compact">
+          <div class="panel-header">
+            <div>
+              <h2>Leading Scorer: Women</h2>
+              <p class="muted">Singles wins = 2 pts, Doubles wins = 1 pt</p>
+            </div>
+          </div>
+          <div id="playerStatsWomenWrap"></div>
         </div>
 
         <div class="panel">
@@ -426,6 +191,14 @@
               <label>Winner</label>
               <input id="winnerPreview" disabled placeholder="Auto-calculated" />
             </div>
+
+            <div class="field full">
+              <h3 style="margin-bottom:10px;">Players</h3>
+              <div class="form-grid">
+                <div class="field" id="playersAWrap"></div>
+                <div class="field" id="playersBWrap"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -457,1054 +230,84 @@
     </div>
   </div>
 
-  <script>
-    const APP_DATA = {
-  "tournament": {
-    "name": "Badminton Tournament Tracker",
-    "date": "Saturday",
-    "pointsForWin": 2,
-    "pointsForLoss": 0,
-    "tieBreaker": "Point Difference"
-  },
-  "teams": [
-    {
-      "id": "Team 1",
-      "displayName": "Smash Force",
-      "group": "Group A",
-      "players": [
-        "Salony Arora (C)",
-        "Manoj Kumar",
-        "Umesh Kumar Singh",
-        "Deepak N",
-        "Rakesh Devanga",
-        "Uday Sheth",
-        "Manjot",
-        "Praveena"
-      ]
-    },
-    {
-      "id": "Team 2",
-      "displayName": "Net Settlement",
-      "group": "Group A",
-      "players": [
-        "Arjun Dev",
-        "Manoj Sahu (C)",
-        "Sohel Nadaf",
-        "Venkatesh G",
-        "Kalaivani D",
-        "Tanya Chopra",
-        "Lakshmi Huttada",
-        "Zeeshan",
-        "Debaprasad Paul"
-      ]
-    },
-    {
-      "id": "Team 5",
-      "displayName": "Net Ninjas",
-      "group": "Group A",
-      "players": [
-        "Prakhar Bindlish (C)",
-        "Abhinav Chaudhary",
-        "Charan TN",
-        "Aditya K",
-        "Bhumireddy Charitha",
-        "neelam gupta",
-        "Akhila Akkisetty",
-        "BANI MD",
-        "Rakesh Pandey"
-      ]
-    },
-    {
-      "id": "Team 3",
-      "displayName": "Racket Scientist",
-      "group": "Group B",
-      "players": [
-        "Tushar Singhal",
-        "AKASH MALLICK",
-        "Ajay Patwal (C)",
-        "Sundar Raj",
-        "Amisha Sahu",
-        "Poulomi Bhaduri",
-        "Rounak Shrivastav",
-        "Amit Tripathi"
-      ]
-    },
-    {
-      "id": "Team 4",
-      "displayName": "Smash Dominators",
-      "group": "Group B",
-      "players": [
-        "Ramya Darshini (C)",
-        "Naveen Nayak",
-        "Kumarswamy Murthy",
-        "Shubhangi Srivastava",
-        "Ranganatha N",
-        "Diwakara Gowda K S",
-        "Rajam Manohar",
-        "Abinash Patro"
-      ]
-    },
-    {
-      "id": "Team 6",
-      "displayName": "Zero Metrics",
-      "group": "Group B",
-      "players": [
-        "Logeshwaran M S (C)",
-        "M S Aditya",
-        "Ajay Kumar Kamaley",
-        "Aditya B",
-        "Anukriti Ganesh",
-        "Reetu Gupta",
-        "Panga Shanmukharao",
-        "Prasanna Kumar Dasari"
-      ]
-    }
-  ],
-  "matches": [
-    {
-      "id": "M01",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M02",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 3",
-      "teamB": "Team 4",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M03",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M04",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M05",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M06",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M07",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M08",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M09",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M10",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M11",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M12",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M13",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M14",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M15",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M16",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M17",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M18",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M19",
-      "slot": "Slot 4",
-      "time": "11:45 - 12:30",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M20",
-      "slot": "Slot 4",
-      "time": "11:45 - 12:30",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M21",
-      "slot": "Slot 5",
-      "time": "12:30 - 13:15",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M22",
-      "slot": "Slot 5",
-      "time": "12:30 - 13:15",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M23",
-      "slot": "Slot 6",
-      "time": "13:15 - 14:00",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M24",
-      "slot": "Slot 6",
-      "time": "13:15 - 14:00",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M25",
-      "slot": "Final Slot 7",
-      "time": "14:30 - 15:15",
-      "court": "Court 1",
-      "matchType": "Men's Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M26",
-      "slot": "Final Slot 7",
-      "time": "14:30 - 15:15",
-      "court": "Court 2",
-      "matchType": "Women's Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M27",
-      "slot": "Final Slot 8",
-      "time": "15:15 - 16:00",
-      "court": "Court 1",
-      "matchType": "Mixed Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M28",
-      "slot": "Final Slot 9",
-      "time": "16:00 - 16:45",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    }
-  ]
-};
-
-    // ----------------------------
-    // QUICK CONFIG
-    // ----------------------------
-    const CONFIG = {
-      appTitle: "ShuttleStorm Live Tracker",
-      adminPin: "Equilend123!@#", // light protection only; not secure
-      useSupabase: false,
-      supabaseUrl: "",
-      supabaseAnonKey: "",
-      supabaseTable: "match_scores"
-    };
-
-    const state = {
-      activeMatchTab: "All",
-      activeStandingTab: "Overall",
-      isAdmin: false,
-      currentMatchId: null,
-      results: {},
-      supabase: null
-    };
-
-    const TEAM_LOOKUP = Object.fromEntries(APP_DATA.teams.map(t => [t.id, t]));
-    const LEAGUE_TEAMS = APP_DATA.teams.map(t => t.id);
-    const GROUPS = {
-      "Group A": APP_DATA.teams.filter(t => t.group === "Group A").map(t => t.id),
-      "Group B": APP_DATA.teams.filter(t => t.group === "Group B").map(t => t.id),
-    };
-    const MATCH_TYPES = ["All", "League", "Final", "Completed", "Upcoming"];
-
-    document.getElementById("subtitle").textContent = `${CONFIG.appTitle} • Saturday`;
-    document.title = CONFIG.appTitle;
-
-    function normalizeScore(value) {
-      if (value === null || value === undefined || value === "") return null;
-      const num = Number(value);
-      return Number.isFinite(num) ? num : null;
-    }
-
-    function getEffectiveTeam(match, side) {
-      const raw = side === "A" ? match.teamA : match.teamB;
-      if (raw === "A1") return getGroupLeader("Group A")?.teamId || "A1";
-      if (raw === "B1") return getGroupLeader("Group B")?.teamId || "B1";
-      return raw;
-    }
-
-    function getTeamLabel(teamId) {
-      if (!TEAM_LOOKUP[teamId]) return teamId;
-      return `${teamId} • ${TEAM_LOOKUP[teamId].displayName}`;
-    }
-
-    function getTeamShort(teamId) {
-      if (!TEAM_LOOKUP[teamId]) return teamId;
-      return TEAM_LOOKUP[teamId].displayName;
-    }
-
-    function getMatchResult(matchId) {
-      return state.results[matchId] || {
-        matchId,
-        set1A: null, set1B: null,
-        set2A: null, set2B: null,
-        set3A: null, set3B: null,
-        status: "upcoming",
-        remarks: ""
-      };
-    }
-
-    function completedSets(result) {
-      return [
-        [result.set1A, result.set1B],
-        [result.set2A, result.set2B],
-        [result.set3A, result.set3B],
-      ].filter(([a,b]) => a !== null && b !== null);
-    }
-
-    function computeWinnerForResult(match, result) {
-      const sets = completedSets(result);
-      let aSets = 0;
-      let bSets = 0;
-      for (const [a,b] of sets) {
-        if (a > b) aSets++;
-        if (b > a) bSets++;
-      }
-      if (aSets === 0 && bSets === 0) return "";
-      if (aSets === bSets) return "";
-      return aSets > bSets ? getEffectiveTeam(match, "A") : getEffectiveTeam(match, "B");
-    }
-
-    function totalPointsForSide(result, side) {
-      const keys = side === "A"
-        ? ["set1A","set2A","set3A"]
-        : ["set1B","set2B","set3B"];
-      return keys.reduce((sum, key) => sum + (Number(result[key]) || 0), 0);
-    }
-
-    function totalPointsAgainstSide(result, side) {
-      const keys = side === "A"
-        ? ["set1B","set2B","set3B"]
-        : ["set1A","set2A","set3A"];
-      return keys.reduce((sum, key) => sum + (Number(result[key]) || 0), 0);
-    }
-
-    function computeStandings(teamIds = LEAGUE_TEAMS) {
-      const rows = teamIds.map(teamId => ({
-        teamId,
-        teamName: getTeamShort(teamId),
-        group: TEAM_LOOKUP[teamId]?.group || "",
-        played: 0,
-        wins: 0,
-        losses: 0,
-        points: 0,
-        scored: 0,
-        conceded: 0,
-        diff: 0,
-      }));
-
-      const map = Object.fromEntries(rows.map(r => [r.teamId, r]));
-      const leagueMatches = APP_DATA.matches.filter(m => m.stage === "League");
-
-      for (const match of leagueMatches) {
-        const result = getMatchResult(match.id);
-        if (result.status !== "completed") continue;
-
-        const teamA = getEffectiveTeam(match, "A");
-        const teamB = getEffectiveTeam(match, "B");
-        if (!map[teamA] || !map[teamB]) continue;
-
-        const winner = computeWinnerForResult(match, result);
-        const aRow = map[teamA];
-        const bRow = map[teamB];
-
-        aRow.played += 1;
-        bRow.played += 1;
-
-        const aScored = totalPointsForSide(result, "A");
-        const bScored = totalPointsForSide(result, "B");
-        aRow.scored += aScored;
-        aRow.conceded += bScored;
-        bRow.scored += bScored;
-        bRow.conceded += aScored;
-
-        if (winner === teamA) {
-          aRow.wins += 1;
-          bRow.losses += 1;
-          aRow.points += APP_DATA.tournament.pointsForWin;
-        } else if (winner === teamB) {
-          bRow.wins += 1;
-          aRow.losses += 1;
-          bRow.points += APP_DATA.tournament.pointsForWin;
-        }
-      }
-
-      rows.forEach(r => r.diff = r.scored - r.conceded);
-      rows.sort((a,b) =>
-        b.points - a.points ||
-        b.diff - a.diff ||
-        b.scored - a.scored ||
-        a.teamId.localeCompare(b.teamId)
-      );
-      return rows;
-    }
-
-    function getGroupLeader(group) {
-      const standings = computeStandings(GROUPS[group]);
-      return standings[0] || null;
-    }
-
-    function enrichMatch(match) {
-      const result = getMatchResult(match.id);
-      const teamA = getEffectiveTeam(match, "A");
-      const teamB = getEffectiveTeam(match, "B");
-      const winner = computeWinnerForResult(match, result);
-      const aScore = totalPointsForSide(result, "A");
-      const bScore = totalPointsForSide(result, "B");
-      return {
-        ...match,
-        effectiveTeamA: teamA,
-        effectiveTeamB: teamB,
-        result,
-        winner,
-        aScore,
-        bScore
-      };
-    }
-
-    function renderMatchTabs() {
-      const wrap = document.getElementById("matchTabs");
-      wrap.innerHTML = MATCH_TYPES.map(tab => `
-        <button class="tab ${state.activeMatchTab === tab ? "active" : ""}" data-match-tab="${tab}">
-          ${tab}
-        </button>
-      `).join("");
-      wrap.querySelectorAll("[data-match-tab]").forEach(btn => btn.onclick = () => {
-        state.activeMatchTab = btn.dataset.matchTab;
-        renderMatches();
-      });
-    }
-
-    function renderStandingTabs() {
-      const tabs = ["Overall", "Group A", "Group B"];
-      const wrap = document.getElementById("standingTabs");
-      wrap.innerHTML = tabs.map(tab => `
-        <button class="tab ${state.activeStandingTab === tab ? "active" : ""}" data-standing-tab="${tab}">
-          ${tab}
-        </button>
-      `).join("");
-      wrap.querySelectorAll("[data-standing-tab]").forEach(btn => btn.onclick = () => {
-        state.activeStandingTab = btn.dataset.standingTab;
-        renderStandings();
-      });
-    }
-
-    function filterMatches(enriched) {
-      const tab = state.activeMatchTab;
-      if (tab === "All") return enriched;
-      if (tab === "League") return enriched.filter(m => m.stage === "League");
-      if (tab === "Final") return enriched.filter(m => m.stage === "Final");
-      if (tab === "Completed") return enriched.filter(m => m.result.status === "completed");
-      if (tab === "Upcoming") return enriched.filter(m => m.result.status !== "completed");
-      return enriched;
-    }
-
-    function renderMatches() {
-      const list = document.getElementById("matchList");
-      const items = filterMatches(APP_DATA.matches.map(enrichMatch));
-
-      if (!items.length) {
-        list.innerHTML = `<div class="match-card"><div>No matches found.</div></div>`;
-        return;
-      }
-
-      list.innerHTML = items.map(match => {
-        const statusClass = match.result.status || "upcoming";
-        const winnerName = match.winner ? getTeamShort(match.winner) : "—";
-        return `
-          <div class="match-card">
-            <div class="match-meta">
-              <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="badge">${match.stage}</span>
-                <span class="badge">${match.slot}</span>
-                <span class="badge">${match.time || ""}</span>
-                <span class="badge">${match.court}</span>
-                <span class="badge">${match.matchType}</span>
-              </div>
-              <span class="status ${statusClass}">${statusClass.toUpperCase()}</span>
-            </div>
-
-            <div class="teams-row">
-              <div class="team-box">
-                <strong>${getTeamShort(match.effectiveTeamA)}</strong>
-                <div class="muted">${match.effectiveTeamA}</div>
-              </div>
-              <div class="score-big">${match.aScore} - ${match.bScore}</div>
-              <div class="team-box">
-                <strong>${getTeamShort(match.effectiveTeamB)}</strong>
-                <div class="muted">${match.effectiveTeamB}</div>
-              </div>
-            </div>
-
-            <div class="match-meta">
-              <div>Winner: <strong>${winnerName}</strong></div>
-              <div>${match.result.remarks ? `Remarks: ${match.result.remarks}` : ""}</div>
-            </div>
-
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <button class="btn small primary" data-edit-match="${match.id}">Update Score</button>
-              <button class="btn small" data-quick-live="${match.id}">Mark Live</button>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      list.querySelectorAll("[data-edit-match]").forEach(btn => btn.onclick = () => openModal(btn.dataset.editMatch));
-      list.querySelectorAll("[data-quick-live]").forEach(btn => btn.onclick = async () => {
-        const matchId = btn.dataset.quickLive;
-        const result = { ...getMatchResult(matchId), status: "live" };
-        await persistResult(matchId, result);
-        render();
-      });
-    }
-
-    function renderStandings() {
-      const wrap = document.getElementById("standingsWrap");
-      let rows;
-      if (state.activeStandingTab === "Overall") rows = computeStandings();
-      else rows = computeStandings(GROUPS[state.activeStandingTab]);
-
-      wrap.innerHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th class="right">P</th>
-              <th class="right">W</th>
-              <th class="right">L</th>
-              <th class="right">Pts</th>
-              <th class="right">Scored</th>
-              <th class="right">Against</th>
-              <th class="right">Diff</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows.map((row, idx) => `
-              <tr>
-                <td>${idx + 1}</td>
-                <td>
-                  <strong>${row.teamName}</strong><br />
-                  <span class="muted">${row.teamId} • ${row.group}</span>
-                </td>
-                <td class="right">${row.played}</td>
-                <td class="right">${row.wins}</td>
-                <td class="right">${row.losses}</td>
-                <td class="right"><strong>${row.points}</strong></td>
-                <td class="right">${row.scored}</td>
-                <td class="right">${row.conceded}</td>
-                <td class="right">${row.diff > 0 ? "+" : ""}${row.diff}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      `;
-    }
-
-    function renderFinals() {
-      const groupA = computeStandings(GROUPS["Group A"]);
-      const groupB = computeStandings(GROUPS["Group B"]);
-      const a1 = groupA[0];
-      const b1 = groupB[0];
-      document.getElementById("kpiFinalists").textContent = `${a1 ? a1.teamName : "TBD"} vs ${b1 ? b1.teamName : "TBD"}`;
-
-      const finalMatches = APP_DATA.matches.filter(m => m.stage === "Final").map(enrichMatch);
-      document.getElementById("finalsWrap").innerHTML = `
-        <div class="card-list">
-          <div class="match-card">
-            <div class="match-meta">
-              <div><span class="pill">Group A Leader</span></div>
-              <div>${a1 ? `${a1.teamName} (${a1.points} pts, ${a1.diff > 0 ? "+" : ""}${a1.diff} diff)` : "TBD"}</div>
-            </div>
-            <div class="match-meta">
-              <div><span class="pill">Group B Leader</span></div>
-              <div>${b1 ? `${b1.teamName} (${b1.points} pts, ${b1.diff > 0 ? "+" : ""}${b1.diff} diff)` : "TBD"}</div>
-            </div>
-          </div>
-          ${finalMatches.map(match => `
-            <div class="match-card">
-              <div class="match-meta">
-                <div>${match.slot} • ${match.time} • ${match.court}</div>
-                <div>${match.matchType}</div>
-              </div>
-              <div class="teams-row">
-                <div class="team-box"><strong>${getTeamShort(match.effectiveTeamA)}</strong></div>
-                <div class="score-big">${match.aScore} - ${match.bScore}</div>
-                <div class="team-box"><strong>${getTeamShort(match.effectiveTeamB)}</strong></div>
-              </div>
-            </div>
-          `).join("")}
+  <div class="modal-backdrop" id="planModalBackdrop">
+    <div class="modal" style="max-width:600px;">
+      <div class="panel-header">
+        <div>
+          <h2 id="planModalTitle">Set Planned Players</h2>
+          <p class="muted" id="planModalMeta"></p>
         </div>
-      `;
-    }
+        <button class="btn small" id="closePlanModalBtn">Close</button>
+      </div>
 
-    function renderTeams() {
-      const wrap = document.getElementById("teamsWrap");
-      wrap.innerHTML = APP_DATA.teams.map(team => `
-        <div class="match-card">
-          <div class="match-meta">
-            <div><strong>${team.displayName}</strong></div>
-            <div>${team.id} • ${team.group}</div>
-          </div>
-          <div>${team.players.map(p => `<span class="badge">${p}</span>`).join(" ")}</div>
+      <div class="panel" style="padding:14px;">
+        <p class="muted" style="margin-bottom:12px;">
+          Set which players are planned to play this match. These will be pre-selected when entering scores.
+        </p>
+        <div class="form-grid">
+          <div class="field" id="planPlayersAWrap"></div>
+          <div class="field" id="planPlayersBWrap"></div>
         </div>
-      `).join("");
-    }
+        <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+          <button class="btn primary" id="savePlannedPlayersBtn">Save Planned Players</button>
+          <button class="btn danger" id="clearPlannedPlayersBtn">Clear All</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    function updateKpis() {
-      const leagueMatches = APP_DATA.matches.filter(m => m.stage === "League");
-      const enriched = leagueMatches.map(enrichMatch);
-      const completed = enriched.filter(m => m.result.status === "completed").length;
-      document.getElementById("kpiCompleted").textContent = completed;
-      document.getElementById("kpiUpcoming").textContent = leagueMatches.length - completed;
-      document.getElementById("toggleAdminBtn").textContent = state.isAdmin ? "Admin On" : "Admin Mode";
-    }
+  <div class="modal-backdrop" id="supabaseModalBackdrop">
+    <div class="modal" style="max-width:700px;">
+      <div class="panel-header">
+        <div>
+          <h2>Setup Live Sync with Supabase</h2>
+          <p class="muted">Enable real-time updates across all devices</p>
+        </div>
+        <button class="btn small" id="closeSupabaseModalBtn">Close</button>
+      </div>
 
-    function openModal(matchId) {
-      if (!state.isAdmin) {
-        const pin = prompt("Enter admin PIN");
-        if (pin !== CONFIG.adminPin) return;
-        state.isAdmin = true;
-      }
-      state.currentMatchId = matchId;
-      const match = APP_DATA.matches.find(m => m.id === matchId);
-      const result = getMatchResult(matchId);
+      <div class="panel" style="padding:14px;">
+        <div style="margin-bottom:16px;">
+          <h3 style="margin-bottom:8px;">What is Live Sync?</h3>
+          <p class="muted" style="font-size:13px;">
+            With Live Sync enabled, all score updates, player changes, and match status will sync in real-time across phones, tablets, and laptops.
+            Perfect for tournaments where multiple people need to see live updates!
+          </p>
+        </div>
 
-      document.getElementById("scoreModalBackdrop").classList.add("open");
-      document.getElementById("modalTitle").textContent = `${match.matchType} • ${match.slot}`;
-      document.getElementById("modalMeta").textContent = `${match.stage} • ${match.court} • ${match.time}`;
-      document.getElementById("modalTeamA").value = getTeamLabel(getEffectiveTeam(match, "A"));
-      document.getElementById("modalTeamB").value = getTeamLabel(getEffectiveTeam(match, "B"));
-      document.getElementById("a1").value = result.set1A ?? "";
-      document.getElementById("b1").value = result.set1B ?? "";
-      document.getElementById("a2").value = result.set2A ?? "";
-      document.getElementById("b2").value = result.set2B ?? "";
-      document.getElementById("a3").value = result.set3A ?? "";
-      document.getElementById("b3").value = result.set3B ?? "";
-      document.getElementById("remarks").value = result.remarks || "";
-      document.getElementById("matchStatus").value = result.status || "upcoming";
-      document.getElementById("winnerPreview").value = computeWinnerForResult(match, result) ? getTeamShort(computeWinnerForResult(match, result)) : "";
-      attachFieldListeners();
-    }
+        <div class="form-grid">
+          <div class="field full">
+            <label>Supabase URL</label>
+            <input type="text" id="supabaseUrlInput" placeholder="https://your-project.supabase.co" />
+          </div>
+          <div class="field full">
+            <label>Supabase Anon Key</label>
+            <input type="text" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+          </div>
+        </div>
 
-    function closeModal() {
-      document.getElementById("scoreModalBackdrop").classList.remove("open");
-      state.currentMatchId = null;
-    }
+        <div style="margin:16px 0; padding:12px; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.3); border-radius:12px;">
+          <div style="font-size:13px;">
+            <strong>How to get Supabase credentials:</strong>
+            <ol style="margin:8px 0 0 0; padding-left:20px;">
+              <li>Create a free account at <a href="https://supabase.com" target="_blank" style="color:#22c55e;">supabase.com</a></li>
+              <li>Create a new project</li>
+              <li>Run the SQL from <code>supabase-schema.sql</code> in the SQL Editor</li>
+              <li>Go to Settings → API</li>
+              <li>Copy the URL and anon/public key</li>
+            </ol>
+          </div>
+        </div>
 
-    function getModalResult() {
-      return {
-        matchId: state.currentMatchId,
-        set1A: normalizeScore(document.getElementById("a1").value),
-        set1B: normalizeScore(document.getElementById("b1").value),
-        set2A: normalizeScore(document.getElementById("a2").value),
-        set2B: normalizeScore(document.getElementById("b2").value),
-        set3A: normalizeScore(document.getElementById("a3").value),
-        set3B: normalizeScore(document.getElementById("b3").value),
-        remarks: document.getElementById("remarks").value.trim(),
-        status: document.getElementById("matchStatus").value
-      };
-    }
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary" id="saveSupabaseBtn">Enable Live Sync</button>
+          <button class="btn danger" id="disableSupabaseBtn">Disable & Use Local Mode</button>
+        </div>
+        <div class="footer-note" id="supabaseStatus">Current mode: <span id="currentSyncMode">Local</span></div>
+      </div>
+    </div>
+  </div>
 
-    function attachFieldListeners() {
-      ["a1","b1","a2","b2","a3","b3","matchStatus"].forEach(id => {
-        document.getElementById(id).oninput = previewWinner;
-        document.getElementById(id).onchange = previewWinner;
-      });
-    }
-
-    function previewWinner() {
-      const match = APP_DATA.matches.find(m => m.id === state.currentMatchId);
-      if (!match) return;
-      const result = getModalResult();
-      const winner = computeWinnerForResult(match, result);
-      document.getElementById("winnerPreview").value = winner ? getTeamShort(winner) : "";
-    }
-
-    function saveLocal() {
-      localStorage.setItem("badminton_tracker_results_v1", JSON.stringify(state.results));
-    }
-
-    function loadLocal() {
-      try {
-        state.results = JSON.parse(localStorage.getItem("badminton_tracker_results_v1") || "{}");
-      } catch {
-        state.results = {};
-      }
-    }
-
-    async function initSupabase() {
-      if (!CONFIG.useSupabase || !CONFIG.supabaseUrl || !CONFIG.supabaseAnonKey) {
-        document.getElementById("syncChip").textContent = "Mode: Local";
-        return;
-      }
-      state.supabase = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseAnonKey);
-      document.getElementById("syncChip").textContent = "Mode: Supabase Live";
-      document.getElementById("saveHint").textContent = "Supabase Live mode is on. Updates sync across phones and laptops.";
-
-      const { data, error } = await state.supabase.from(CONFIG.supabaseTable).select("*");
-      if (!error && Array.isArray(data)) {
-        data.forEach(row => {
-          state.results[row.match_id] = {
-            matchId: row.match_id,
-            set1A: row.set1_a,
-            set1B: row.set1_b,
-            set2A: row.set2_a,
-            set2B: row.set2_b,
-            set3A: row.set3_a,
-            set3B: row.set3_b,
-            remarks: row.remarks || "",
-            status: row.status || "upcoming"
-          };
-        });
-      }
-
-      state.supabase
-        .channel("live-scores")
-        .on("postgres_changes", { event: "*", schema: "public", table: CONFIG.supabaseTable }, payload => {
-          const row = payload.new || payload.old;
-          if (!row) return;
-          state.results[row.match_id] = {
-            matchId: row.match_id,
-            set1A: row.set1_a,
-            set1B: row.set1_b,
-            set2A: row.set2_a,
-            set2B: row.set2_b,
-            set3A: row.set3_a,
-            set3B: row.set3_b,
-            remarks: row.remarks || "",
-            status: row.status || "upcoming"
-          };
-          render();
-        })
-        .subscribe();
-    }
-
-    async function persistResult(matchId, result) {
-      state.results[matchId] = result;
-      saveLocal();
-
-      if (state.supabase) {
-        const payload = {
-          match_id: matchId,
-          set1_a: result.set1A,
-          set1_b: result.set1B,
-          set2_a: result.set2A,
-          set2_b: result.set2B,
-          set3_a: result.set3A,
-          set3_b: result.set3B,
-          remarks: result.remarks,
-          status: result.status
-        };
-        const { error } = await state.supabase.from(CONFIG.supabaseTable).upsert(payload);
-        if (error) alert("Supabase save failed: " + error.message);
-      }
-    }
-
-    function render() {
-      renderStandingTabs();
-      renderStandings();
-
-      renderMatchTabs();
-      renderMatches();
-      
-      renderFinals();
-      renderTeams();
-      updateKpis();
-    }
-
-    async function handleSave() {
-      const result = getModalResult();
-      await persistResult(state.currentMatchId, result);
-      closeModal();
-      render();
-    }
-
-    async function handleMarkLive() {
-      const result = getModalResult();
-      result.status = "live";
-      await persistResult(state.currentMatchId, result);
-      previewWinner();
-      render();
-    }
-
-    async function handleReset() {
-      if (!confirm("Reset this match result?")) return;
-      const reset = {
-        matchId: state.currentMatchId,
-        set1A: null, set1B: null,
-        set2A: null, set2B: null,
-        set3A: null, set3B: null,
-        remarks: "",
-        status: "upcoming"
-      };
-      await persistResult(state.currentMatchId, reset);
-      closeModal();
-      render();
-    }
-
-    function exportJson() {
-      const blob = new Blob([JSON.stringify({ data: APP_DATA, results: state.results }, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "badminton-tournament-results.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importJson(file) {
-      const reader = new FileReader();
-      reader.onload = async e => {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (parsed.results && typeof parsed.results === "object") {
-            state.results = parsed.results;
-            saveLocal();
-            render();
-            if (state.supabase) {
-              for (const [matchId, result] of Object.entries(state.results)) {
-                await persistResult(matchId, result);
-              }
-            }
-          }
-        } catch (err) {
-          alert("Invalid JSON file");
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function bindEvents() {
-      document.getElementById("closeModalBtn").onclick = closeModal;
-      document.getElementById("saveScoreBtn").onclick = handleSave;
-      document.getElementById("markLiveBtn").onclick = handleMarkLive;
-      document.getElementById("resetScoreBtn").onclick = handleReset;
-      document.getElementById("toggleAdminBtn").onclick = () => {
-        if (state.isAdmin) {
-          state.isAdmin = false;
-          render();
-          return;
-        }
-        const pin = prompt("Enter admin PIN");
-        if (pin === CONFIG.adminPin) {
-          state.isAdmin = true;
-          render();
-        }
-      };
-      document.getElementById("exportBtn").onclick = exportJson;
-      document.getElementById("importInput").onchange = e => {
-        const file = e.target.files?.[0];
-        if (file) importJson(file);
-        e.target.value = "";
-      };
-      document.getElementById("scoreModalBackdrop").addEventListener("click", e => {
-        if (e.target.id === "scoreModalBackdrop") closeModal();
-      });
-    }
-
-    async function init() {
-      loadLocal();
-      bindEvents();
-      await initSupabase();
-      render();
-    }
-
-    init();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

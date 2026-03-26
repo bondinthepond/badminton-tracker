@@ -8,6 +8,10 @@ create table if not exists public.match_scores (
   set3_b integer null,
   remarks text default '',
   status text default 'upcoming',
+  players_a text[] default '{}',
+  players_b text[] default '{}',
+  planned_players_a text[] default '{}',
+  planned_players_b text[] default '{}',
   updated_at timestamptz not null default now()
 );
 
