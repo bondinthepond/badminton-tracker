@@ -1396,10 +1396,12 @@
     }
 
     function render() {
-      renderMatchTabs();
       renderStandingTabs();
-      renderMatches();
       renderStandings();
+
+      renderMatchTabs();
+      renderMatches();
+      
       renderFinals();
       renderTeams();
       updateKpis();
