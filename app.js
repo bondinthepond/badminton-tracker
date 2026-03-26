@@ -1,416 +1,19 @@
-const APP_DATA = {
-  "tournament": {
-    "name": "Badminton Tournament Tracker",
-    "date": "Saturday",
-    "pointsForWin": 2,
-    "pointsForLoss": 0,
-    "tieBreaker": "Point Difference"
-  },
-  "teams": [
-    {
-      "id": "Team 1",
-      "displayName": "Smash Force",
-      "group": "Group A",
-      "players": [
-        "Salony Arora (C)",
-        "Manoj Kumar",
-        "Umesh Kumar Singh",
-        "Deepak N",
-        "Rakesh Devanga",
-        "Uday Sheth",
-        "Manjot",
-        "Praveena"
-      ]
-    },
-    {
-      "id": "Team 2",
-      "displayName": "Net Settlement",
-      "group": "Group A",
-      "players": [
-        "Arjun Dev",
-        "Manoj Sahu (C)",
-        "Sohel Nadaf",
-        "Venkatesh G",
-        "Kalaivani D",
-        "Tanya Chopra",
-        "Lakshmi Huttada",
-        "Zeeshan",
-        "Debaprasad Paul"
-      ]
-    },
-    {
-      "id": "Team 5",
-      "displayName": "Net Ninjas",
-      "group": "Group A",
-      "players": [
-        "Prakhar Bindlish (C)",
-        "Abhinav Chaudhary",
-        "Charan TN",
-        "Aditya K",
-        "Bhumireddy Charitha",
-        "neelam gupta",
-        "Akhila Akkisetty",
-        "BANI MD",
-        "Rakesh Pandey"
-      ]
-    },
-    {
-      "id": "Team 3",
-      "displayName": "Racket Scientist",
-      "group": "Group B",
-      "players": [
-        "Tushar Singhal",
-        "AKASH MALLICK",
-        "Ajay Patwal (C)",
-        "Sundar Raj",
-        "Amisha Sahu",
-        "Poulomi Bhaduri",
-        "Rounak Shrivastav",
-        "Amit Tripathi"
-      ]
-    },
-    {
-      "id": "Team 4",
-      "displayName": "Smash Dominators",
-      "group": "Group B",
-      "players": [
-        "Ramya Darshini (C)",
-        "Naveen Nayak",
-        "Kumarswamy Murthy",
-        "Shubhangi Srivastava",
-        "Ranganatha N",
-        "Diwakara Gowda K S",
-        "Rajam Manohar",
-        "Abinash Patro"
-      ]
-    },
-    {
-      "id": "Team 6",
-      "displayName": "Zero Metrics",
-      "group": "Group B",
-      "players": [
-        "Logeshwaran M S (C)",
-        "M S Aditya",
-        "Ajay Kumar Kamaley",
-        "Aditya B",
-        "Anukriti Ganesh",
-        "Reetu Gupta",
-        "Panga Shanmukharao",
-        "Prasanna Kumar Dasari"
-      ]
-    }
-  ],
-  "matches": [
-    {
-      "id": "M01",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M02",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 3",
-      "teamB": "Team 4",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M03",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M04",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M05",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M06",
-      "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M07",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M08",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M09",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M10",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M11",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M12",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M13",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M14",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 2",
-      "matchType": "Singles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M15",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M16",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M17",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M18",
-      "slot": "Slot 3",
-      "time": "11:00 - 11:45",
-      "court": "Court 6",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M19",
-      "slot": "Slot 4",
-      "time": "11:45 - 12:30",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M20",
-      "slot": "Slot 4",
-      "time": "11:45 - 12:30",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M21",
-      "slot": "Slot 5",
-      "time": "12:30 - 13:15",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 2",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M22",
-      "slot": "Slot 5",
-      "time": "12:30 - 13:15",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M23",
-      "slot": "Slot 6",
-      "time": "13:15 - 14:00",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M24",
-      "slot": "Slot 6",
-      "time": "13:15 - 14:00",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 6",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M25",
-      "slot": "Final Slot 7",
-      "time": "14:30 - 15:15",
-      "court": "Court 1",
-      "matchType": "Men's Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M26",
-      "slot": "Final Slot 7",
-      "time": "14:30 - 15:15",
-      "court": "Court 2",
-      "matchType": "Women's Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M27",
-      "slot": "Final Slot 8",
-      "time": "15:15 - 16:00",
-      "court": "Court 1",
-      "matchType": "Mixed Doubles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    },
-    {
-      "id": "M28",
-      "slot": "Final Slot 9",
-      "time": "16:00 - 16:45",
-      "court": "Court 1",
-      "matchType": "Singles",
-      "teamA": "A1",
-      "teamB": "B1",
-      "stage": "Final",
-      "group": null
-    }
-  ]
-};
+let APP_DATA = null;
+
+// Load tournament data from JSON file
+async function loadTournamentData() {
+  try {
+    const response = await fetch('tournament-data.json');
+    if (!response.ok) throw new Error('Failed to load tournament data');
+    APP_DATA = await response.json();
+    console.log('Tournament data loaded successfully');
+  } catch (error) {
+    console.error('Error loading tournament data:', error);
+    alert('Failed to load tournament data. Please refresh the page.');
+  }
+}
+
+// APP_DATA will be loaded from tournament-data.json
 
 // ----------------------------
 // QUICK CONFIG
@@ -438,15 +41,21 @@ const state = {
   supabase: null
 };
 
-const TEAM_LOOKUP = Object.fromEntries(APP_DATA.teams.map(t => [t.id, t]));
-const LEAGUE_TEAMS = APP_DATA.teams.map(t => t.id);
-const GROUPS = {
-  "Group A": APP_DATA.teams.filter(t => t.group === "Group A").map(t => t.id),
-  "Group B": APP_DATA.teams.filter(t => t.group === "Group B").map(t => t.id),
-};
+let TEAM_LOOKUP = {};
+let LEAGUE_TEAMS = [];
+let GROUPS = {};
 const MATCH_TYPES = ["All", "League", "Final", "Completed", "Upcoming"];
 
-document.getElementById("subtitle").textContent = `${CONFIG.appTitle} • Saturday`;
+// Initialize data-dependent constants after APP_DATA is loaded
+function initializeConstants() {
+  TEAM_LOOKUP = Object.fromEntries(APP_DATA.teams.map(t => [t.id, t]));
+  LEAGUE_TEAMS = APP_DATA.teams.map(t => t.id);
+  GROUPS = {
+    "Group A": APP_DATA.teams.filter(t => t.group === "Group A").map(t => t.id),
+    "Group B": APP_DATA.teams.filter(t => t.group === "Group B").map(t => t.id),
+  };
+  document.getElementById("subtitle").textContent = `${CONFIG.appTitle} • ${APP_DATA.tournament.date}`;
+}
 document.title = CONFIG.appTitle;
 
 function normalizeScore(value) {
@@ -1781,6 +1390,12 @@ function bindEvents() {
 }
 
 async function init() {
+  await loadTournamentData();
+  if (!APP_DATA) {
+    console.error('Failed to load tournament data, cannot initialize app');
+    return;
+  }
+  initializeConstants();
   loadLocal();
   bindEvents();
   await initSupabase();

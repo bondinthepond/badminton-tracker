@@ -1,6 +1,6 @@
 {
   "tournament": {
-    "name": "Badminton Tournament Tracker",
+    "name": "ShuttleStorm Tracker",
     "date": "Saturday",
     "pointsForWin": 2,
     "pointsForLoss": 0,
@@ -24,7 +24,7 @@
     },
     {
       "id": "Team 2",
-      "displayName": "Net Settlement",
+      "displayName": "Net Settlers",
       "group": "Group A",
       "players": [
         "Arjun Dev",
@@ -104,7 +104,7 @@
     {
       "id": "M01",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 1",
       "matchType": "Singles",
       "teamA": "Team 1",
@@ -115,7 +115,7 @@
     {
       "id": "M02",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 2",
       "matchType": "Singles",
       "teamA": "Team 3",
@@ -126,7 +126,7 @@
     {
       "id": "M03",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 3",
       "matchType": "Men's Doubles",
       "teamA": "Team 1",
@@ -137,7 +137,7 @@
     {
       "id": "M04",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 4",
       "matchType": "Men's Doubles",
       "teamA": "Team 3",
@@ -148,7 +148,7 @@
     {
       "id": "M05",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 5",
       "matchType": "Mixed Doubles",
       "teamA": "Team 2",
@@ -159,7 +159,7 @@
     {
       "id": "M06",
       "slot": "Slot 1",
-      "time": "9:30 - 10 : 15",
+      "time": "9:30 - 10:15",
       "court": "Court 6",
       "matchType": "Mixed Doubles",
       "teamA": "Team 4",
@@ -171,8 +171,8 @@
       "id": "M07",
       "slot": "Slot 2",
       "time": "10:15 - 11:00",
-      "court": "Court 1",
-      "matchType": "Singles",
+      "court": "Court 3",
+      "matchType": "Men's Doubles",
       "teamA": "Team 2",
       "teamB": "Team 5",
       "stage": "League",
@@ -182,8 +182,8 @@
       "id": "M08",
       "slot": "Slot 2",
       "time": "10:15 - 11:00",
-      "court": "Court 2",
-      "matchType": "Singles",
+      "court": "Court 4",
+      "matchType": "Men's Doubles",
       "teamA": "Team 4",
       "teamB": "Team 6",
       "stage": "League",
@@ -193,10 +193,10 @@
       "id": "M09",
       "slot": "Slot 2",
       "time": "10:15 - 11:00",
-      "court": "Court 3",
-      "matchType": "Men's Doubles",
+      "court": "Court 5",
+      "matchType": "Women's Doubles",
       "teamA": "Team 1",
-      "teamB": "Team 2",
+      "teamB": "Team 5",
       "stage": "League",
       "group": "Group A"
     },
@@ -204,37 +204,15 @@
       "id": "M10",
       "slot": "Slot 2",
       "time": "10:15 - 11:00",
-      "court": "Court 4",
-      "matchType": "Men's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M11",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
-      "court": "Court 5",
-      "matchType": "Mixed Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M12",
-      "slot": "Slot 2",
-      "time": "10:15 - 11:00",
       "court": "Court 6",
-      "matchType": "Mixed Doubles",
+      "matchType": "Women's Doubles",
       "teamA": "Team 3",
       "teamB": "Team 6",
       "stage": "League",
       "group": "Group B"
     },
     {
-      "id": "M13",
+      "id": "M11",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 1",
@@ -245,7 +223,7 @@
       "group": "Group A"
     },
     {
-      "id": "M14",
+      "id": "M12",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 2",
@@ -256,29 +234,29 @@
       "group": "Group B"
     },
     {
-      "id": "M15",
+      "id": "M13",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 3",
       "matchType": "Men's Doubles",
-      "teamA": "Team 2",
-      "teamB": "Team 5",
+      "teamA": "Team 1",
+      "teamB": "Team 2",
       "stage": "League",
       "group": "Group A"
     },
     {
-      "id": "M16",
+      "id": "M14",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 4",
       "matchType": "Men's Doubles",
-      "teamA": "Team 4",
-      "teamB": "Team 6",
+      "teamA": "Team 3",
+      "teamB": "Team 4",
       "stage": "League",
       "group": "Group B"
     },
     {
-      "id": "M17",
+      "id": "M15",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 5",
@@ -289,13 +267,35 @@
       "group": "Group A"
     },
     {
-      "id": "M18",
+      "id": "M16",
       "slot": "Slot 3",
       "time": "11:00 - 11:45",
       "court": "Court 6",
       "matchType": "Mixed Doubles",
       "teamA": "Team 3",
+      "teamB": "Team 4",
+      "stage": "League",
+      "group": "Group B"
+    },
+    {
+      "id": "M17",
+      "slot": "Slot 4",
+      "time": "11:45 - 12:30",
+      "court": "Court 3",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 1",
       "teamB": "Team 5",
+      "stage": "League",
+      "group": "Group A"
+    },
+    {
+      "id": "M18",
+      "slot": "Slot 4",
+      "time": "11:45 - 12:30",
+      "court": "Court 4",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 3",
+      "teamB": "Team 6",
       "stage": "League",
       "group": "Group B"
     },
@@ -325,6 +325,94 @@
       "id": "M21",
       "slot": "Slot 5",
       "time": "12:30 - 13:15",
+      "court": "Court 1",
+      "matchType": "Singles",
+      "teamA": "Team 2",
+      "teamB": "Team 5",
+      "stage": "League",
+      "group": "Group A"
+    },
+    {
+      "id": "M22",
+      "slot": "Slot 5",
+      "time": "12:30 - 13:15",
+      "court": "Court 2",
+      "matchType": "Singles",
+      "teamA": "Team 4",
+      "teamB": "Team 6",
+      "stage": "League",
+      "group": "Group B"
+    },
+    {
+      "id": "M23",
+      "slot": "Slot 5",
+      "time": "12:30 - 13:15",
+      "court": "Court 3",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 2",
+      "teamB": "Team 5",
+      "stage": "League",
+      "group": "Group A"
+    },
+    {
+      "id": "M24",
+      "slot": "Slot 5",
+      "time": "12:30 - 13:15",
+      "court": "Court 4",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 4",
+      "teamB": "Team 6",
+      "stage": "League",
+      "group": "Group B"
+    },
+    {
+      "id": "M25",
+      "slot": "Slot 5",
+      "time": "12:30 - 13:15",
+      "court": "Court 5",
+      "matchType": "Mixed Doubles",
+      "teamA": "Team 1",
+      "teamB": "Team 5",
+      "stage": "League",
+      "group": "Group A"
+    },
+    {
+      "id": "M26",
+      "slot": "Slot 5",
+      "time": "12:30 - 13:15",
+      "court": "Court 6",
+      "matchType": "Mixed Doubles",
+      "teamA": "Team 3",
+      "teamB": "Team 6",
+      "stage": "League",
+      "group": "Group B"
+    },
+    {
+      "id": "M27",
+      "slot": "Slot 6",
+      "time": "13:15 - 14:00",
+      "court": "Court 3",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 1",
+      "teamB": "Team 2",
+      "stage": "League",
+      "group": "Group A"
+    },
+    {
+      "id": "M28",
+      "slot": "Slot 6",
+      "time": "13:15 - 14:00",
+      "court": "Court 4",
+      "matchType": "Men's Doubles",
+      "teamA": "Team 3",
+      "teamB": "Team 4",
+      "stage": "League",
+      "group": "Group B"
+    },
+    {
+      "id": "M29",
+      "slot": "Slot 6",
+      "time": "13:15 - 14:00",
       "court": "Court 5",
       "matchType": "Women's Doubles",
       "teamA": "Team 1",
@@ -333,41 +421,19 @@
       "group": "Group A"
     },
     {
-      "id": "M22",
-      "slot": "Slot 5",
-      "time": "12:30 - 13:15",
-      "court": "Court 6",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 3",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group B"
-    },
-    {
-      "id": "M23",
-      "slot": "Slot 6",
-      "time": "13:15 - 14:00",
-      "court": "Court 5",
-      "matchType": "Women's Doubles",
-      "teamA": "Team 1",
-      "teamB": "Team 5",
-      "stage": "League",
-      "group": "Group A"
-    },
-    {
-      "id": "M24",
+      "id": "M30",
       "slot": "Slot 6",
       "time": "13:15 - 14:00",
       "court": "Court 6",
       "matchType": "Women's Doubles",
       "teamA": "Team 3",
-      "teamB": "Team 6",
+      "teamB": "Team 4",
       "stage": "League",
       "group": "Group B"
     },
     {
-      "id": "M25",
-      "slot": "Final Slot 7",
+      "id": "M31",
+      "slot": "Slot 7 - Finals",
       "time": "14:30 - 15:15",
       "court": "Court 1",
       "matchType": "Men's Doubles",
@@ -377,8 +443,8 @@
       "group": null
     },
     {
-      "id": "M26",
-      "slot": "Final Slot 7",
+      "id": "M32",
+      "slot": "Slot 7 - Finals",
       "time": "14:30 - 15:15",
       "court": "Court 2",
       "matchType": "Women's Doubles",
@@ -388,8 +454,8 @@
       "group": null
     },
     {
-      "id": "M27",
-      "slot": "Final Slot 8",
+      "id": "M33",
+      "slot": "Slot 8 - Finals",
       "time": "15:15 - 16:00",
       "court": "Court 1",
       "matchType": "Mixed Doubles",
@@ -399,10 +465,32 @@
       "group": null
     },
     {
-      "id": "M28",
-      "slot": "Final Slot 9",
+      "id": "M34",
+      "slot": "Slot 8 - Finals",
+      "time": "15:15 - 16:00",
+      "court": "Court 2",
+      "matchType": "Doubles",
+      "teamA": "A1",
+      "teamB": "B1",
+      "stage": "Final",
+      "group": null
+    },
+    {
+      "id": "M35",
+      "slot": "Slot 9 - Finals",
       "time": "16:00 - 16:45",
       "court": "Court 1",
+      "matchType": "Men's Singles",
+      "teamA": "A1",
+      "teamB": "B1",
+      "stage": "Final",
+      "group": null
+    },
+    {
+      "id": "M36",
+      "slot": "Slot 9 - Finals",
+      "time": "16:00 - 16:45",
+      "court": "Court 2",
       "matchType": "Singles",
       "teamA": "A1",
       "teamB": "B1",
