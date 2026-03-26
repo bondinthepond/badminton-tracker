@@ -428,6 +428,7 @@ const state = {
   activeMatchTab: "All",
   activeStandingTab: "Overall",
   activeParticipationTab: "Smash Force",
+  activeTeamFilter: "all",
   isAdmin: false,
   currentMatchId: null,
   results: {},
@@ -747,6 +748,24 @@ function enrichMatch(match) {
   };
 }
 
+function renderTeamFilter() {
+  const select = document.getElementById("teamFilter");
+  const teams = APP_DATA.teams.map(t => t.id).sort();
+
+  select.innerHTML = `
+    <option value="all">All Teams</option>
+    ${teams.map(teamId => {
+      const team = TEAM_LOOKUP[teamId];
+      return `<option value="${teamId}" ${state.activeTeamFilter === teamId ? "selected" : ""}>${team.displayName}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeTeamFilter = select.value;
+    renderMatches();
+  };
+}
+
 function renderMatchTabs() {
   const wrap = document.getElementById("matchTabs");
   wrap.innerHTML = MATCH_TYPES.map(tab => `
@@ -756,6 +775,7 @@ function renderMatchTabs() {
   `).join("");
   wrap.querySelectorAll("[data-match-tab]").forEach(btn => btn.onclick = () => {
     state.activeMatchTab = btn.dataset.matchTab;
+    renderMatchTabs();
     renderMatches();
   });
 }
@@ -770,18 +790,30 @@ function renderStandingTabs() {
   `).join("");
   wrap.querySelectorAll("[data-standing-tab]").forEach(btn => btn.onclick = () => {
     state.activeStandingTab = btn.dataset.standingTab;
+    renderStandingTabs();
     renderStandings();
   });
 }
 
 function filterMatches(enriched) {
+  let filtered = enriched;
+
+  // Filter by tab (stage/status)
   const tab = state.activeMatchTab;
-  if (tab === "All") return enriched;
-  if (tab === "League") return enriched.filter(m => m.stage === "League");
-  if (tab === "Final") return enriched.filter(m => m.stage === "Final");
-  if (tab === "Completed") return enriched.filter(m => m.result.status === "completed");
-  if (tab === "Upcoming") return enriched.filter(m => m.result.status !== "completed");
-  return enriched;
+  if (tab === "League") filtered = filtered.filter(m => m.stage === "League");
+  else if (tab === "Final") filtered = filtered.filter(m => m.stage === "Final");
+  else if (tab === "Completed") filtered = filtered.filter(m => m.result.status === "completed");
+  else if (tab === "Upcoming") filtered = filtered.filter(m => m.result.status !== "completed");
+
+  // Filter by team
+  if (state.activeTeamFilter !== "all") {
+    filtered = filtered.filter(m =>
+      m.effectiveTeamA === state.activeTeamFilter ||
+      m.effectiveTeamB === state.activeTeamFilter
+    );
+  }
+
+  return filtered;
 }
 
 function renderMatches() {
@@ -1058,6 +1090,7 @@ function renderParticipationTabs() {
   `).join("");
   wrap.querySelectorAll("[data-participation-tab]").forEach(btn => btn.onclick = () => {
     state.activeParticipationTab = btn.dataset.participationTab;
+    renderParticipationTabs();
     renderParticipation();
   });
 }
@@ -1488,6 +1521,7 @@ function render() {
   renderStandings();
 
   renderMatchTabs();
+  renderTeamFilter();
   renderMatches();
 
   renderFinals();
