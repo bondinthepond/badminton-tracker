@@ -259,6 +259,18 @@ button, select, input, textarea {
   color: var(--muted);
 }
 
+.badge-success {
+  background: rgba(34,197,94,.18);
+  border-color: rgba(34,197,94,.35);
+  color: #22c55e;
+}
+
+.badge-upcoming {
+  background: rgba(148,163,184,.18);
+  border-color: rgba(148,163,184,.35);
+  color: #94a3b8;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

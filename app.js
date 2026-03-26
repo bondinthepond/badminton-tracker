@@ -429,6 +429,9 @@ const state = {
   activeStandingTab: "Overall",
   activeParticipationTab: "Smash Force",
   activeTeamFilter: "all",
+  activeSlotFilter: "all",
+  activeScheduleTeamFilter: "all",
+  activeScheduleSlotFilter: "all",
   isAdmin: false,
   currentMatchId: null,
   results: {},
@@ -766,6 +769,23 @@ function renderTeamFilter() {
   };
 }
 
+function renderSlotFilter() {
+  const select = document.getElementById("slotFilter");
+  const slots = [...new Set(APP_DATA.matches.map(m => m.slot))].sort();
+
+  select.innerHTML = `
+    <option value="all">All Slots</option>
+    ${slots.map(slot => {
+      return `<option value="${slot}" ${state.activeSlotFilter === slot ? "selected" : ""}>${slot}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeSlotFilter = select.value;
+    renderMatches();
+  };
+}
+
 function renderMatchTabs() {
   const wrap = document.getElementById("matchTabs");
   wrap.innerHTML = MATCH_TYPES.map(tab => `
@@ -811,6 +831,11 @@ function filterMatches(enriched) {
       m.effectiveTeamA === state.activeTeamFilter ||
       m.effectiveTeamB === state.activeTeamFilter
     );
+  }
+
+  // Filter by slot
+  if (state.activeSlotFilter !== "all") {
+    filtered = filtered.filter(m => m.slot === state.activeSlotFilter);
   }
 
   return filtered;
@@ -987,6 +1012,108 @@ function renderTeams() {
       <div>${team.players.map(p => `<span class="badge">${p}</span>`).join(" ")}</div>
     </div>
   `).join("");
+}
+
+function renderScheduleTeamFilter() {
+  const select = document.getElementById("scheduleTeamFilter");
+  const teams = APP_DATA.teams.map(t => t.id).sort();
+
+  select.innerHTML = `
+    <option value="all">All Teams</option>
+    ${teams.map(teamId => {
+      const team = TEAM_LOOKUP[teamId];
+      return `<option value="${teamId}" ${state.activeScheduleTeamFilter === teamId ? "selected" : ""}>${team.displayName}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeScheduleTeamFilter = select.value;
+    renderSchedule();
+  };
+}
+
+function renderScheduleSlotFilter() {
+  const select = document.getElementById("scheduleSlotFilter");
+  const slots = [...new Set(APP_DATA.matches.map(m => m.slot))].sort();
+
+  select.innerHTML = `
+    <option value="all">All Slots</option>
+    ${slots.map(slot => {
+      return `<option value="${slot}" ${state.activeScheduleSlotFilter === slot ? "selected" : ""}>${slot}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeScheduleSlotFilter = select.value;
+    renderSchedule();
+  };
+}
+
+function filterScheduleMatches(enriched) {
+  let filtered = enriched;
+
+  // Filter by team
+  if (state.activeScheduleTeamFilter !== "all") {
+    filtered = filtered.filter(m =>
+      m.effectiveTeamA === state.activeScheduleTeamFilter ||
+      m.effectiveTeamB === state.activeScheduleTeamFilter
+    );
+  }
+
+  // Filter by slot
+  if (state.activeScheduleSlotFilter !== "all") {
+    filtered = filtered.filter(m => m.slot === state.activeScheduleSlotFilter);
+  }
+
+  return filtered;
+}
+
+function renderSchedule() {
+  const wrap = document.getElementById("scheduleList");
+  const enrichedMatches = APP_DATA.matches.map(enrichMatch);
+  const items = filterScheduleMatches(enrichedMatches);
+
+  if (!items.length) {
+    wrap.innerHTML = `<div class="match-card"><div>No matches found.</div></div>`;
+    return;
+  }
+
+  // Group by slot
+  const bySlot = {};
+  items.forEach(m => {
+    if (!bySlot[m.slot]) bySlot[m.slot] = [];
+    bySlot[m.slot].push(m);
+  });
+
+  wrap.innerHTML = Object.keys(bySlot).sort().map(slot => {
+    const matches = bySlot[slot];
+    return `
+      <div style="margin-bottom:20px;">
+        <h3 style="margin-bottom:12px; color:#22c55e;">${slot} (${matches[0].time})</h3>
+        <div style="display:grid; gap:8px;">
+          ${matches.map(m => `
+            <div style="display:grid; grid-template-columns: 100px 1fr 80px 1fr 100px; gap:10px; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; align-items:center; font-size:13px;">
+              <div style="color:#94a3b8;">${m.court}</div>
+              <div style="text-align:right;">
+                <strong>${getTeamShort(m.effectiveTeamA)}</strong>
+                <div style="font-size:11px; color:#94a3b8;">${m.effectiveTeamA}</div>
+              </div>
+              <div style="text-align:center; color:#22c55e; font-weight:bold;">
+                ${m.result.status === "completed" ? `${m.scoreA} - ${m.scoreB}` : "vs"}
+              </div>
+              <div>
+                <strong>${getTeamShort(m.effectiveTeamB)}</strong>
+                <div style="font-size:11px; color:#94a3b8;">${m.effectiveTeamB}</div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge ${m.result.status === "completed" ? "badge-success" : "badge-upcoming"}">${m.matchType}</span>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function renderPlayerStats() {
@@ -1522,6 +1649,7 @@ function render() {
 
   renderMatchTabs();
   renderTeamFilter();
+  renderSlotFilter();
   renderMatches();
 
   renderFinals();
@@ -1529,6 +1657,11 @@ function render() {
   renderParticipationTabs();
   renderParticipation();
   renderTeams();
+
+  renderScheduleTeamFilter();
+  renderScheduleSlotFilter();
+  renderSchedule();
+
   updateKpis();
 }
 

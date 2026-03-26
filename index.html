@@ -54,11 +54,19 @@
           </div>
         </div>
         <div class="tabs" id="matchTabs"></div>
-        <div style="margin-bottom:12px;">
-          <label style="font-size:13px; color:#94a3b8; margin-right:8px;">Filter by Team:</label>
-          <select id="teamFilter" style="padding:6px 10px; background:#1e293b; border:1px solid #334155; border-radius:4px; color:#e2e8f0; font-size:13px;">
-            <option value="all">All Teams</option>
-          </select>
+        <div style="margin-bottom:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+          <div>
+            <label style="font-size:13px; color:#94a3b8; margin-right:8px;">Team:</label>
+            <select id="teamFilter" style="padding:6px 10px; background:#1e293b; border:1px solid #334155; border-radius:4px; color:#e2e8f0; font-size:13px;">
+              <option value="all">All Teams</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:13px; color:#94a3b8; margin-right:8px;">Slot:</label>
+            <select id="slotFilter" style="padding:6px 10px; background:#1e293b; border:1px solid #334155; border-radius:4px; color:#e2e8f0; font-size:13px;">
+              <option value="all">All Slots</option>
+            </select>
+          </div>
         </div>
         <div class="card-list" id="matchList"></div>
       </div>
@@ -73,6 +81,30 @@
           </div>
           <div class="tabs" id="standingTabs"></div>
           <div id="standingsWrap"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h2>Complete Schedule</h2>
+              <p class="muted">View entire tournament schedule with filters.</p>
+            </div>
+          </div>
+          <div style="margin-bottom:12px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+            <div>
+              <label style="font-size:13px; color:#94a3b8; margin-right:8px;">Team:</label>
+              <select id="scheduleTeamFilter" style="padding:6px 10px; background:#1e293b; border:1px solid #334155; border-radius:4px; color:#e2e8f0; font-size:13px;">
+                <option value="all">All Teams</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-size:13px; color:#94a3b8; margin-right:8px;">Slot:</label>
+              <select id="scheduleSlotFilter" style="padding:6px 10px; background:#1e293b; border:1px solid #334155; border-radius:4px; color:#e2e8f0; font-size:13px;">
+                <option value="all">All Slots</option>
+              </select>
+            </div>
+          </div>
+          <div id="scheduleList"></div>
         </div>
 
         <div class="panel panel-compact">
