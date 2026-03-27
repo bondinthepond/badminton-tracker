@@ -1,7 +1,7 @@
 {
   "tournament": {
     "name": "ShuttleStorm Tracker",
-    "date": "Saturday",
+    "date": "Saturday, 28th March, The Majesstine Sports",
     "pointsForWin": 2,
     "pointsForLoss": 0,
     "tieBreaker": "Point Difference"
@@ -24,7 +24,7 @@
     },
     {
       "id": "Team 2",
-      "displayName": "Net Settlers",
+      "displayName": "Net Settlement",
       "group": "Group A",
       "players": [
         "Arjun Dev",
