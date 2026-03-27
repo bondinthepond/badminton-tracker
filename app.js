@@ -33,8 +33,10 @@ const state = {
   activeParticipationTab: "Smash Force",
   activeTeamFilter: "all",
   activeSlotFilter: "all",
+  activeMatchTypeFilter: "all",
   activeScheduleTeamFilter: "all",
   activeScheduleSlotFilter: "all",
+  activeScheduleMatchTypeFilter: "all",
   isAdmin: false,
   currentMatchId: null,
   results: {},
@@ -395,6 +397,23 @@ function renderSlotFilter() {
   };
 }
 
+function renderMatchTypeFilter() {
+  const select = document.getElementById("matchTypeFilter");
+  const matchTypes = [...new Set(APP_DATA.matches.map(m => m.matchType))].sort();
+
+  select.innerHTML = `
+    <option value="all">All Types</option>
+    ${matchTypes.map(type => {
+      return `<option value="${type}" ${state.activeMatchTypeFilter === type ? "selected" : ""}>${type}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeMatchTypeFilter = select.value;
+    renderMatches();
+  };
+}
+
 function renderMatchTabs() {
   const wrap = document.getElementById("matchTabs");
   wrap.innerHTML = MATCH_TYPES.map(tab => `
@@ -445,6 +464,11 @@ function filterMatches(enriched) {
   // Filter by slot
   if (state.activeSlotFilter !== "all") {
     filtered = filtered.filter(m => m.slot === state.activeSlotFilter);
+  }
+
+  // Filter by match type
+  if (state.activeMatchTypeFilter !== "all") {
+    filtered = filtered.filter(m => m.matchType === state.activeMatchTypeFilter);
   }
 
   return filtered;
@@ -658,6 +682,23 @@ function renderScheduleSlotFilter() {
   };
 }
 
+function renderScheduleMatchTypeFilter() {
+  const select = document.getElementById("scheduleMatchTypeFilter");
+  const matchTypes = [...new Set(APP_DATA.matches.map(m => m.matchType))].sort();
+
+  select.innerHTML = `
+    <option value="all">All Types</option>
+    ${matchTypes.map(type => {
+      return `<option value="${type}" ${state.activeScheduleMatchTypeFilter === type ? "selected" : ""}>${type}</option>`;
+    }).join("")}
+  `;
+
+  select.onchange = () => {
+    state.activeScheduleMatchTypeFilter = select.value;
+    renderSchedule();
+  };
+}
+
 function filterScheduleMatches(enriched) {
   let filtered = enriched;
 
@@ -672,6 +713,11 @@ function filterScheduleMatches(enriched) {
   // Filter by slot
   if (state.activeScheduleSlotFilter !== "all") {
     filtered = filtered.filter(m => m.slot === state.activeScheduleSlotFilter);
+  }
+
+  // Filter by match type
+  if (state.activeScheduleMatchTypeFilter !== "all") {
+    filtered = filtered.filter(m => m.matchType === state.activeScheduleMatchTypeFilter);
   }
 
   return filtered;
@@ -701,7 +747,7 @@ function renderSchedule() {
         <h3 style="margin-bottom:12px; color:#22c55e;">${slot} (${matches[0].time})</h3>
         <div style="display:grid; gap:8px;">
           ${matches.map(m => `
-            <div style="display:grid; grid-template-columns: 100px 1fr 80px 1fr 130px; gap:10px; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; align-items:center; font-size:13px;">
+            <div style="display:grid; grid-template-columns: 90px 1fr 70px 1fr 120px; gap:10px; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; align-items:center; font-size:13px;">
               <div style="color:#94a3b8;">${m.court}</div>
               <div style="text-align:right;">
                 <strong>${getTeamShort(m.effectiveTeamA)}</strong>
@@ -714,8 +760,8 @@ function renderSchedule() {
                 <strong>${getTeamShort(m.effectiveTeamB)}</strong>
                 <div style="font-size:11px; color:#94a3b8;">${m.effectiveTeamB}</div>
               </div>
-              <div style="text-align:right;">
-                <span class="badge ${m.result.status === "completed" ? "badge-success" : "badge-upcoming"}">${m.matchType}</span>
+              <div style="text-align:right; min-width:120px;">
+                <span class="badge ${m.result.status === "completed" ? "badge-success" : "badge-upcoming"}" style="display:inline-block; white-space:nowrap;">${m.matchType}</span>
               </div>
             </div>
           `).join("")}
@@ -1270,6 +1316,7 @@ function render() {
   renderMatchTabs();
   renderTeamFilter();
   renderSlotFilter();
+  renderMatchTypeFilter();
   renderMatches();
 
   renderFinals();
@@ -1280,6 +1327,7 @@ function render() {
 
   renderScheduleTeamFilter();
   renderScheduleSlotFilter();
+  renderScheduleMatchTypeFilter();
   renderSchedule();
 
   updateKpis();
