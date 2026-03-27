@@ -21,9 +21,9 @@ async function loadTournamentData() {
 const CONFIG = {
   appTitle: "ShuttleStorm Live Tracker",
   adminPin: "Equilend123!@#", // light protection only; not secure
-  useSupabase: false,
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  useSupabase: true,
+  supabaseUrl: "https://lydlxkbwagzuossjocfo.supabase.co",
+  supabaseAnonKey: "sb_publishable_mjOLD0bsE0zOZ4Dlv3EP7w_ROel4gMS",
   supabaseTable: "match_scores"
 };
 
@@ -701,7 +701,7 @@ function renderSchedule() {
         <h3 style="margin-bottom:12px; color:#22c55e;">${slot} (${matches[0].time})</h3>
         <div style="display:grid; gap:8px;">
           ${matches.map(m => `
-            <div style="display:grid; grid-template-columns: 100px 1fr 80px 1fr 100px; gap:10px; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; align-items:center; font-size:13px;">
+            <div style="display:grid; grid-template-columns: 100px 1fr 80px 1fr 130px; gap:10px; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; align-items:center; font-size:13px;">
               <div style="color:#94a3b8;">${m.court}</div>
               <div style="text-align:right;">
                 <strong>${getTeamShort(m.effectiveTeamA)}</strong>
@@ -873,6 +873,17 @@ function updateKpis() {
   document.getElementById("kpiCompleted").textContent = completed;
   document.getElementById("kpiUpcoming").textContent = leagueMatches.length - completed;
   document.getElementById("toggleAdminBtn").textContent = state.isAdmin ? "Admin On" : "Admin Mode";
+
+  // Calculate current slot
+  const liveMatch = enriched.find(m => m.result.status === "live");
+  const upcomingMatch = enriched.find(m => m.result.status === "upcoming");
+  let currentSlot = "All completed";
+  if (liveMatch) {
+    currentSlot = liveMatch.slot;
+  } else if (upcomingMatch) {
+    currentSlot = upcomingMatch.slot;
+  }
+  document.getElementById("kpiCurrentSlot").textContent = currentSlot;
 }
 
 function openModal(matchId) {
