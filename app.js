@@ -598,11 +598,21 @@ function renderStandings() {
 }
 
 function renderFinals() {
-  const groupA = computeStandings(GROUPS["Group A"]);
-  const groupB = computeStandings(GROUPS["Group B"]);
-  const a1 = groupA[0];
-  const b1 = groupB[0];
-  document.getElementById("kpiFinalists").textContent = `${a1 ? a1.teamName : "TBD"} vs ${b1 ? b1.teamName : "TBD"}`;
+  // Check if league stage is complete
+  const leagueMatches = APP_DATA.matches.filter(m => m.stage === "League");
+  const enrichedLeague = leagueMatches.map(enrichMatch);
+  const allLeagueComplete = enrichedLeague.every(m => m.result.status === "completed");
+
+  let a1, b1;
+  if (allLeagueComplete) {
+    const groupA = computeStandings(GROUPS["Group A"]);
+    const groupB = computeStandings(GROUPS["Group B"]);
+    a1 = groupA[0];
+    b1 = groupB[0];
+    document.getElementById("kpiFinalists").textContent = `${a1 ? a1.teamName : "TBD"} vs ${b1 ? b1.teamName : "TBD"}`;
+  } else {
+    document.getElementById("kpiFinalists").textContent = "TBD";
+  }
 
   const finalMatches = APP_DATA.matches.filter(m => m.stage === "Final").map(enrichMatch);
   document.getElementById("finalsWrap").innerHTML = `
@@ -610,11 +620,11 @@ function renderFinals() {
       <div class="match-card">
         <div class="match-meta">
           <div><span class="pill">Group A Leader</span></div>
-          <div>${a1 ? `${a1.teamName} (${a1.points} pts, ${a1.diff > 0 ? "+" : ""}${a1.diff} diff)` : "TBD"}</div>
+          <div>${allLeagueComplete && a1 ? `${a1.teamName} (${a1.points} pts, ${a1.diff > 0 ? "+" : ""}${a1.diff} diff)` : "TBD - Complete league stage first"}</div>
         </div>
         <div class="match-meta">
           <div><span class="pill">Group B Leader</span></div>
-          <div>${b1 ? `${b1.teamName} (${b1.points} pts, ${b1.diff > 0 ? "+" : ""}${b1.diff} diff)` : "TBD"}</div>
+          <div>${allLeagueComplete && b1 ? `${b1.teamName} (${b1.points} pts, ${b1.diff > 0 ? "+" : ""}${b1.diff} diff)` : "TBD - Complete league stage first"}</div>
         </div>
       </div>
       ${finalMatches.map(match => `
